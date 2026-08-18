@@ -1,0 +1,36 @@
+# Core Dependencies
+anthropic>=0.40.0           # Anthropic Claude API client
+tenacity>=8.2.3             # Retry logic with exponential back-off
+
+# API Layer
+fastapi>=0.110.0            # Web framework
+uvicorn[standard]>=0.27.0   # ASGI server
+python-multipart>=0.0.9     # File upload support
+aiofiles>=23.2.1            # Async file I/O
+androguard==4.1.2           # APK analysis and DEX parsing
+pyaxmlparser==0.3.31        # Android XML manifest parser
+
+# Data Processing
+pandas==2.2.0               # DataFrame operations
+numpy==1.26.3               # Numerical operations
+pyarrow==15.0.0             # Parquet file I/O
+
+# Validation & Models
+pydantic==2.6.0             # Data validation and schemas
+pydantic-settings==2.1.0    # Settings management
+
+# CLI & Progress
+click==8.1.7                # Command-line interface
+tqdm==4.66.1                # Progress bars
+rich==13.7.0                # Rich terminal output
+
+# Logging
+loguru==0.7.2               # Advanced logging
+
+# Utilities
+python-magic==0.4.27        # File type detection (optional, for validation)
+cryptography==42.0.2        # Certificate analysis
+pyyaml==6.0.1               # Configuration files
+
+# Hashing
+xxhash==3.4.1               # Fast hashing for determinism

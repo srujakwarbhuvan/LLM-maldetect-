@@ -1,0 +1,147 @@
+╔══════════════════════════════════════════════════════════════╗
+║       APK FEATURE EXTRACTOR - QUICK START CARD              ║
+╚══════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────┐
+│ STEP 1: AUTOMATIC SETUP (Run Once)                          │
+└──────────────────────────────────────────────────────────────┘
+
+  Open PowerShell in d:\feature and run:
+  
+  → .\setup.bat
+  
+  This will:
+  ✓ Create virtual environment
+  ✓ Install all dependencies
+  ✓ Configure the system
+
+
+┌──────────────────────────────────────────────────────────────┐
+│ STEP 2: ACTIVATE ENVIRONMENT (Every time you use it)        │
+└──────────────────────────────────────────────────────────────┘
+
+  → venv\Scripts\activate
+  
+  You'll see (venv) in your prompt when activated
+
+
+┌──────────────────────────────────────────────────────────────┐
+│ STEP 3: VERIFY IT WORKS                                     │
+└──────────────────────────────────────────────────────────────┘
+
+  → python verify_installation.py
+  
+  Should see: "🎉 All tests passed!"
+
+
+┌──────────────────────────────────────────────────────────────┐
+│ STEP 4: GET SOME APK FILES                                  │
+└──────────────────────────────────────────────────────────────┘
+
+  Place APK files in: d:\feature\data\input\
+  
+  Download from:
+  • APKMirror.com (safe, trusted)
+  • F-Droid.org (open source)
+  • Your Android phone (backup apps)
+
+
+┌──────────────────────────────────────────────────────────────┐
+│ STEP 5: EXTRACT FEATURES! 🚀                                │
+└──────────────────────────────────────────────────────────────┘
+
+  SINGLE APK:
+  → apk-extract single data\input\your-app.apk -o features.json
+  
+  MULTIPLE APKs:
+  → apk-extract batch data\input\ -o data\output\features.csv
+  
+  VIEW RESULTS:
+  → type data\output\features.csv
+
+
+╔══════════════════════════════════════════════════════════════╗
+║ COMMON COMMANDS - COPY & PASTE                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+Setup & Activate:
+─────────────────
+cd d:\feature
+.\setup.bat
+venv\Scripts\activate
+
+Extract Features:
+─────────────────
+apk-extract batch data\input\ -o features.csv
+
+Test with Example:
+──────────────────
+python scripts\example_single_apk.py
+
+Check Installation:
+───────────────────
+python verify_installation.py
+apk-extract --version
+
+Get Help:
+─────────
+apk-extract --help
+apk-extract single --help
+apk-extract batch --help
+
+
+╔══════════════════════════════════════════════════════════════╗
+║ OUTPUT FILES YOU'LL GET                                     ║
+╚══════════════════════════════════════════════════════════════╝
+
+📄 features.csv
+   • One row per APK
+   • 255+ columns with features
+   • Ready for machine learning
+
+📄 features.json
+   • Human-readable format
+   • Good for inspection
+
+📄 extraction.log
+   • Detailed processing logs
+   • Error messages if any
+
+
+╔══════════════════════════════════════════════════════════════╗
+║ TROUBLESHOOTING                                             ║
+╚══════════════════════════════════════════════════════════════╝
+
+Problem: "apk-extract not found"
+Fix:     pip install -e .
+
+Problem: "No APKs found"
+Fix:     Place .apk files in data\input\
+
+Problem: Setup fails
+Fix:     Install Python 3.10+ from python.org
+
+Problem: Execution policy error
+Fix:     Run: Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+
+╔══════════════════════════════════════════════════════════════╗
+║ DOCUMENTATION                                               ║
+╚══════════════════════════════════════════════════════════════╝
+
+📖 HOW_TO_EXECUTE.md     - Detailed execution guide
+📖 QUICKSTART.md         - Beginner tutorial  
+📖 README.md             - Project overview
+📖 PROJECT_SUMMARY.md    - Complete documentation
+
+
+╔══════════════════════════════════════════════════════════════╗
+║ READY TO START? RUN THIS NOW:                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+  cd d:\feature
+  .\setup.bat
+
+  Then follow the prompts!
+  
+  🚀 You'll be extracting features in 5 minutes!

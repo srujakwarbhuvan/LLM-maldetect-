@@ -1,0 +1,1 @@
+"""Test extractors initialization file."""
