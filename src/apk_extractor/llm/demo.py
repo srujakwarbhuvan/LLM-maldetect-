@@ -4,7 +4,7 @@ Demo / smoke-test for the LLM Reasoning Layer.
 Usage
 -----
     # Set your API key first
-    $env:ANTHROPIC_API_KEY = "sk-ant-..."
+    $env:GEMINI_API_KEY = "AQ.Ab8RN..."
 
     # Run with the real output.json from this repo
     python -m apk_extractor.llm.demo
@@ -16,6 +16,7 @@ Usage
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -174,6 +175,11 @@ def main() -> None:
     console.print(f"[bold]Score:[/bold] {SAMPLE_PREDICTION['malware_score']}/100  |  "
                   f"[bold]Risk:[/bold] {SAMPLE_PREDICTION['risk_level']}  |  "
                   f"[bold]Verdict:[/bold] {SAMPLE_PREDICTION['verdict'].upper()}\n")
+
+    if not os.environ.get("GEMINI_API_KEY"):
+        console.print("[bold red]Error:[/bold red] GEMINI_API_KEY environment variable not set.")
+        logger.exception("Demo failed")
+        sys.exit(1)
 
     console.print("[dim]Calling Anthropic claude-sonnet-4-20250514 with extended thinking...[/dim]")
 

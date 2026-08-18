@@ -9,7 +9,7 @@ Server entrypoint — run with:
 
 Environment Variables
 ---------------------
-ANTHROPIC_API_KEY   — Required for LLM explanation (Stage 3)
+    GEMINI_API_KEY      — Required for LLM explanation (Stage 3)
 MODELS_DIR          — Path to .pkl model files (default: ./models)
 MAX_APK_SIZE_MB     — Max upload size in MB (default: 100)
 LOG_LEVEL           — Logging level (default: INFO)
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     print(f"  Android Malware Detection API")
     print(f"  http://{host}:{port}")
     print(f"  Docs: http://{host}:{port}/docs")
-    print(f"  LLM: {'enabled' if os.environ.get('ANTHROPIC_API_KEY') else 'disabled (set ANTHROPIC_API_KEY)'}")
+    print(f"  LLM: {'enabled' if os.environ.get('GEMINI_API_KEY') else 'disabled (set GEMINI_API_KEY)'}")
     print(f"{'='*60}\n")
 
     uvicorn.run(

@@ -49,7 +49,7 @@ from apk_extractor.pipeline.apk_pipeline import APKFeatureExtractor
 API_VERSION     = "1.0.0"
 MAX_APK_SIZE_MB = int(os.environ.get("MAX_APK_SIZE_MB", "100"))
 MODELS_DIR      = Path(os.environ.get("MODELS_DIR", "models"))
-ANTHROPIC_KEY   = os.environ.get("ANTHROPIC_API_KEY", "")
+GEMINI_KEY   = os.environ.get("GEMINI_API_KEY", "")
 
 # In-memory analysis cache (replace with Redis in production)
 _ANALYSIS_CACHE: dict[str, AnalysisResponse] = {}
@@ -151,7 +151,7 @@ def create_app(
             status="ok",
             version=API_VERSION,
             ml_models_loaded=not predictor.is_heuristic_mode,
-            llm_available=bool(ANTHROPIC_KEY),
+            llm_available=bool(GEMINI_KEY),
         )
 
     @app.post(
@@ -168,7 +168,7 @@ def create_app(
     )
     async def analyze(
         file: UploadFile = File(..., description="APK file to analyze"),
-        enable_llm: bool = Form(True, description="Run LLM explanation (requires ANTHROPIC_API_KEY)"),
+        enable_llm: bool = Form(True, description="Run LLM explanation (requires GEMINI_API_KEY)"),
         enable_thinking: bool = Form(True, description="Enable extended thinking in LLM"),
     ) -> AnalysisResponse:
         """
@@ -238,19 +238,19 @@ def create_app(
             llm_explanation: Optional[LLMExplanation] = None
             llm_available = False
 
-            if enable_llm and ANTHROPIC_KEY:
-                logger.info(f"[{analysis_id}] Stage 3: LLM explanation")
+            if enable_llm and GEMINI_KEY:
+                logger.info(f"[{analysis_id}] Stage 3: LLM Explanation starting...")
                 try:
                     llm_explanation = explain_with_llm(
                         prediction,
-                        api_key=ANTHROPIC_KEY,
+                        api_key=GEMINI_KEY,
                         enable_thinking=enable_thinking,
                     )
                     llm_available = True
                 except Exception as e:
                     logger.warning(f"[{analysis_id}] LLM explanation failed: {e}")
-            elif not ANTHROPIC_KEY:
-                logger.info(f"[{analysis_id}] Stage 3: Skipped (no ANTHROPIC_API_KEY)")
+            elif not GEMINI_KEY:
+                logger.info(f"[{analysis_id}] Stage 3: Skipped (no GEMINI_API_KEY)")
             else:
                 logger.info(f"[{analysis_id}] Stage 3: Skipped (enable_llm=False)")
 

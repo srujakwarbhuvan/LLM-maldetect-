@@ -246,8 +246,16 @@ class MLPredictor:
         std = float(np.std(proba_values)) if len(proba_values) > 1 else 0.0
         confidence = round(max(0.0, 1.0 - 2 * std), 4)
 
-        # Build suspicious features from the flat dict + known weights
-        suspicious = self._build_suspicious_features(flat)
+        # Build suspicious features from the flat dict + real model importances if available
+        real_importances = None
+        if "random_forest" in self._models and hasattr(self._models["random_forest"], "feature_importances_") and self._feature_names:
+            importances = self._models["random_forest"].feature_importances_
+            real_importances = dict(zip(self._feature_names, importances))
+        elif "xgboost" in self._models and hasattr(self._models["xgboost"], "feature_importances_") and self._feature_names:
+            importances = self._models["xgboost"].feature_importances_
+            real_importances = dict(zip(self._feature_names, importances))
+
+        suspicious = self._build_suspicious_features(flat, real_importances)
         top_names  = [sf.feature_name for sf in suspicious[:10]]
 
         return PredictionResult(
@@ -325,18 +333,36 @@ class MLPredictor:
     # ------------------------------------------------------------------
 
     @staticmethod
-    def _build_suspicious_features(flat: Dict[str, Any]) -> List[SuspiciousFeature]:
+    def _build_suspicious_features(flat: Dict[str, Any], real_importances: Optional[Dict[str, float]] = None) -> List[SuspiciousFeature]:
         """Return suspicious features sorted by importance, highest first."""
         results = []
-        for feat, weight in sorted(_HEURISTIC_WEIGHTS.items(),
-                                   key=lambda x: x[1], reverse=True):
-            val = flat.get(feat)
-            if val is not None and val not in (0, False):
+        
+        if real_importances:
+            active_feats = []
+            for feat, weight in real_importances.items():
+                val = flat.get(feat)
+                if val is not None and val not in (0, False) and weight > 0:
+                    active_feats.append((feat, weight, val))
+            
+            active_feats.sort(key=lambda x: x[1], reverse=True)
+            
+            # Limit to top 20 to avoid overloading the LLM
+            for feat, weight, val in active_feats[:20]:
                 results.append(SuspiciousFeature(
                     feature_name=feat,
                     value=val,
-                    importance=weight,
+                    importance=float(weight),
                 ))
+        else:
+            for feat, weight in sorted(_HEURISTIC_WEIGHTS.items(),
+                                       key=lambda x: x[1], reverse=True):
+                val = flat.get(feat)
+                if val is not None and val not in (0, False):
+                    results.append(SuspiciousFeature(
+                        feature_name=feat,
+                        value=val,
+                        importance=weight,
+                    ))
         return results
 
     @staticmethod
